@@ -1,6 +1,10 @@
 // Point d'entrée : configuration du jeu Phaser (960 x 720, taille fixe) et liste des scènes.
-// Porte la constante DEBUG, qui activera les vérifications T1 à T5 en console (lot 5).
+// Figé après l'étape 0 (propriétaire : C) : chacun peut le modifier en local pour tester, sans committer.
 import * as Phaser from "phaser";
+import { SceneCarte } from "./vue/SceneCarte";
+import { SceneLabyrinthe } from "./vue/SceneLabyrinthe";
+import { SceneVictoire } from "./vue/SceneVictoire";
+import { lancerVerifications } from "./modele/verifications";
 
 // Mode debug : true pendant la production, false pour la version jouée.
 const DEBUG = true;
@@ -19,17 +23,13 @@ const config: Phaser.Types.Core.GameConfig = {
     scale: {
         mode: Phaser.Scale.NONE // taille fixe, aucune adaptation (mobile hors périmètre)
     },
-    // Règle d'ordre : aucune scène avant le jalon 1.
-    // SceneCarte, SceneLabyrinthe et SceneVictoire seront ajoutées aux lots 6 et 7.
-    scene: []
+    // La première scène de la liste démarre seule : le jeu commence sur la carte (section 1).
+    scene: [SceneCarte, SceneLabyrinthe, SceneVictoire]
 };
 
-const jeu = new Phaser.Game(config);
+new Phaser.Game(config);
 
 if (DEBUG) {
-    jeu.events.once("ready", () => {
-        console.log("[DEBUG] Arthur et la quête du trésor — prototype V0, lot 0");
-        console.log("[DEBUG] Taille du jeu : " + LARGEUR + " x " + HAUTEUR);
-        console.log("[DEBUG] Modèle : pas encore de données ni d'algorithme (lots 1 à 5)");
-    });
+    console.log("[DEBUG] Arthur et la quête du trésor — prototype V0");
+    lancerVerifications();
 }
