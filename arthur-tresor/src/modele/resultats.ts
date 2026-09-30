@@ -7,11 +7,13 @@ export interface ResultatChemin {
     chemin: string[];  // identifiants, du départ à l'arrivée inclus
 }
 
-// Sortie de QueteCarte.deplacer() (C3, C5, C10 à C12)
+// Sortie de QueteCarte.deplacer() (C3, C5, C9, C10 à C12)
 // distance = longueur du tronçon (popup C5) ; total = distance cumulée (message C12)
+// impasse = arrivée sur un lieu qui n'a qu'un seul voisin et n'est pas l'arrivée (C9, prompt v3)
 export type ResultatDeplacement =
     | { type: "nonAdjacent" }
     | { type: "deplace"; distance: number }
+    | { type: "impasse"; distance: number }
     | { type: "arriveeReussie"; distance: number }
     | { type: "arriveeEchouee"; distance: number; total: number };
 
