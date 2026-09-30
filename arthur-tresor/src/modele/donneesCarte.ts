@@ -16,10 +16,12 @@ export interface Route {
     distance: number;
 }
 
-// Disposition en trois bandes horizontales, comme le schéma de la section 6 :
-//   bande A (haut, y = 150)   : itinéraire A, impasse Marais au-dessus
-//   bande B (milieu, y = 330) : Taverne, itinéraire B, Entrée ; impasse Grotte en dessous
-//   bande C (bas, y = 560)    : itinéraire C, impasse Cimetière au-dessus
+// « La feuille » : chaque lieu a une place fixe, du départ (à gauche) vers l'Entrée (à droite).
+// La vue locale (prompt v3) s'en sert pour placer les voisins :
+//   x plus petit que le lieu d'Arthur → à gauche (arrière) ; x plus grand → à droite (avant) ;
+//   y → rang de haut en bas. Deux voisins n'ont jamais le même x.
+// Trois bandes, comme le schéma de la section 6 : itinéraire A en haut, B au milieu, C en bas.
+// Chaque impasse est placée un peu après son lieu de départ, pour être « en avant » de lui.
 export const lieux: Lieu[] = [
     // Départ et arrivée, sur la bande du milieu
     { id: "taverne", nom: "Taverne", x: 70, y: 330 },
@@ -27,7 +29,7 @@ export const lieux: Lieu[] = [
 
     // Itinéraire A (bande du haut) et son impasse
     { id: "moulin", nom: "Moulin", x: 200, y: 150 },
-    { id: "marais", nom: "Marais", x: 200, y: 50 },
+    { id: "marais", nom: "Marais", x: 280, y: 50 },
     { id: "pont", nom: "Pont", x: 360, y: 150 },
     { id: "gue", nom: "Gué", x: 520, y: 150 },
     { id: "tour", nom: "Tour", x: 680, y: 150 },
@@ -37,13 +39,13 @@ export const lieux: Lieu[] = [
     { id: "ferme", nom: "Ferme", x: 310, y: 330 },
     { id: "clairiere", nom: "Clairière", x: 440, y: 330 },
     { id: "source", nom: "Source", x: 570, y: 330 },
-    { id: "grotte", nom: "Grotte", x: 570, y: 430 },
+    { id: "grotte", nom: "Grotte", x: 635, y: 430 },
     { id: "rocher", nom: "Rocher", x: 700, y: 330 },
 
     // Itinéraire C (bande du bas) et son impasse
     { id: "foret", nom: "Forêt", x: 220, y: 560 },
     { id: "ruines", nom: "Ruines", x: 440, y: 560 },
-    { id: "cimetiere", nom: "Cimetière", x: 440, y: 470 },
+    { id: "cimetiere", nom: "Cimetière", x: 550, y: 470 },
     { id: "colline", nom: "Colline", x: 660, y: 560 }
 ];
 
