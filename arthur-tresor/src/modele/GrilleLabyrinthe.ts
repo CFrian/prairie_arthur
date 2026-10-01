@@ -1,70 +1,18 @@
-// Grille du labyrinthe vue comme un graphe : 4 voisins, coût 1, murs exclus.
+// Grille du labyrinthe vue comme un graphe : cases "ligne,colonne", 4 voisins, coût 1, murs exclus.
+// Propriétaire : A (tâche A1). Signatures fixées à l'étape 0 : ne pas les changer sans accord.
 import type { Graphe, Voisin } from "./Graphe";
 
-const DECALAGES = [
-  { ligne: -1, colonne: 0 },
-  { ligne: 1, colonne: 0 },
-  { ligne: 0, colonne: -1 },
-  { ligne: 0, colonne: 1 },
-];
-
 export class GrilleLabyrinthe implements Graphe {
-  entree = "";
-  tresor = "";
+    // Cases lues dans la grille (lettres E et T), jamais saisies à la main
+    entree = "";
+    tresor = "";
 
-  private readonly lignes: string[];
-  private readonly casesBloquees: string[];
+    // casesBloquees : cases traitées comme des murs (utilisé uniquement par T4).
+    // À IMPLÉMENTER (A1) : lire E et T, mémoriser la grille. Retirer les « _ » en les utilisant.
+    constructor(_lignes: string[], _casesBloquees: string[] = []) {}
 
-  constructor(lignes: string[], casesBloquees: string[] = []) {
-    this.lignes = lignes;
-    this.casesBloquees = casesBloquees;
-
-    for (let ligne = 0; ligne < lignes.length; ligne++) {
-      for (let colonne = 0; colonne < lignes[ligne].length; colonne++) {
-        const caractere = lignes[ligne][colonne];
-
-        if (caractere === "E") {
-          this.entree = `${ligne},${colonne}`;
-        }
-
-        if (caractere === "T") {
-          this.tresor = `${ligne},${colonne}`;
-        }
-      }
+    // Cases de sol voisines (haut, bas, gauche, droite), coût 1 chacune
+    voisins(_id: string): Voisin[] {
+        throw new Error("GrilleLabyrinthe.voisins : à implémenter (A1)");
     }
-  }
-
-  voisins(id: string): Voisin[] {
-    const [ligneTexte, colonneTexte] = id.split(",");
-    const ligne = Number(ligneTexte);
-    const colonne = Number(colonneTexte);
-
-    if (!Number.isInteger(ligne) || !Number.isInteger(colonne)) {
-      return [];
-    }
-
-    const resultat: Voisin[] = [];
-
-    for (const decalage of DECALAGES) {
-      const l = ligne + decalage.ligne;
-      const c = colonne + decalage.colonne;
-
-      if (this.estPraticable(l, c)) {
-        resultat.push({
-          id: `${l},${c}`,
-          cout: 1,
-        });
-      }
-    }
-
-    return resultat;
-  }
-
-  private estPraticable(ligne: number, colonne: number): boolean {
-    if (ligne < 0 || ligne >= this.lignes.length) return false;
-    if (colonne < 0 || colonne >= this.lignes[ligne].length) return false;
-    if (this.lignes[ligne][colonne] === "#") return false;
-
-    return !this.casesBloquees.includes(`${ligne},${colonne}`);
-  }
 }
