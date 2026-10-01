@@ -1,7 +1,9 @@
-// Algorithmes de plus court chemin, indépendants de Phaser et du terrain (B1).
+// Algorithmes de plus court chemin, indépendants de Phaser et du terrain (A4).
+// Propriétaire : B (tâche B1). Aucun générique TypeScript (prompt maître, section 4).
 import type { Graphe } from "./Graphe";
 import type { ResultatChemin } from "./resultats";
 
+// A2 : Dijkstra simple, minimum choisi par parcours de tableau (pas de file de priorité)
 export function dijkstra(
   graphe: Graphe,
   depart: string,
@@ -62,6 +64,7 @@ export function dijkstra(
   return { cout: distances[arrivee], chemin };
 }
 
+// A3 : BFS avec une file (tableau + index) et une table des cases visitées
 export function bfs(
   graphe: Graphe,
   depart: string,
@@ -70,8 +73,10 @@ export function bfs(
   const file: string[] = [depart];
   let index = 0;
 
-  const visites = new Set<string>([depart]);
-  const precedents = new Map<string, string>();
+  // Table des cases visitées et case précédente de chacune (simples objets, sans générique)
+  const visites: { [id: string]: boolean } = {};
+  const precedents: { [id: string]: string } = {};
+  visites[depart] = true;
 
   while (index < file.length) {
     const courant = file[index++];
@@ -79,15 +84,15 @@ export function bfs(
     if (courant === arrivee) break;
 
     for (const voisin of graphe.voisins(courant)) {
-      if (visites.has(voisin.id)) continue;
+      if (visites[voisin.id]) continue;
 
-      visites.add(voisin.id);
-      precedents.set(voisin.id, courant);
+      visites[voisin.id] = true;
+      precedents[voisin.id] = courant;
       file.push(voisin.id);
     }
   }
 
-  if (!visites.has(arrivee)) {
+  if (!visites[arrivee]) {
     return { cout: Infinity, chemin: [] };
   }
 
@@ -97,7 +102,7 @@ export function bfs(
   while (courant !== undefined) {
     chemin.unshift(courant);
     if (courant === depart) break;
-    courant = precedents.get(courant);
+    courant = precedents[courant];
   }
 
   if (chemin[0] !== depart) {
