@@ -26,5 +26,8 @@
   "dependencies": {
     "phaser": "^3.90.0",
     "terser": "^5.39.0"
-  }
+  },
+  "main": "log.js",
+  "keywords": [],
+  "type": "commonjs"
 }
